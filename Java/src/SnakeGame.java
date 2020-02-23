@@ -28,12 +28,12 @@ public class SnakeGame {
         int snakeLength = 0;
         for(int i = 0; i < game.length; i++){
             for(int j = 0; j < game[i].length; j++){
+                exhaustiveChecks++;
                 int neighbors = 0;
                 //check if cell is part of the snake
                 if(game[i][j] == true){
                     snakeLength++;
                     if(i == headPosition[0] && j == headPosition[1]){
-                        exhaustiveChecks++;
                         continue;
                     }
                     //check neighbors
@@ -60,19 +60,17 @@ public class SnakeGame {
                     if(neighbors == 1){
                         tailFound[0] = i;
                         tailFound[1] = j;
-                    }else{
-                       // exhaustiveChecks++;
                     }
                 }
+                exhaustiveChecks = (tailFound[0]) * (game.length) + tailFound[1] + 1;
                 tailFound[2] = snakeLength;
             }
         }
-        exhaustiveChecks = (tailFound[0]+1) * (tailFound[1]+1);
-        System.out.println(exhaustiveChecks);
+        System.out.println("Checks:" + exhaustiveChecks);
         printA(tailFound);
         return tailFound;
     }
-    public int[] findTailRecursive(){
+    /*public int[] findTailRecursive(){
         int[] tailFound = new int[3];
         //base case if cell is tail
         if() {
@@ -81,7 +79,7 @@ public class SnakeGame {
         }else if(){
             //call with new cell
         }
-    }
+    }*/
     public void printA(int[] boardToPrint){
         for(int number : boardToPrint){
             System.out.println(number);
