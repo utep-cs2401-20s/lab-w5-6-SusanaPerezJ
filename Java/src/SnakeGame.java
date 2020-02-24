@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class SnakeGame {
     //to calculate final score
     private boolean[][] game;
@@ -24,6 +22,7 @@ public class SnakeGame {
         headPosition[1] = y;
     }
     public int[] findTailExhaustive(){
+        exhaustiveChecks = 0;
         int[] tailFound = new int[3];
         int snakeLength = 0;
         for(int i = 0; i < game.length; i++){
@@ -33,6 +32,7 @@ public class SnakeGame {
                 //check if cell is part of the snake
                 if(game[i][j] == true){
                     snakeLength++;
+                    //check it's not the head
                     if(i == headPosition[0] && j == headPosition[1]){
                         continue;
                     }
@@ -57,6 +57,7 @@ public class SnakeGame {
                             neighbors++;
                         }
                     }
+                    //check is it's the tail
                     if(neighbors == 1){
                         tailFound[0] = i;
                         tailFound[1] = j;
@@ -70,20 +71,45 @@ public class SnakeGame {
         printA(tailFound);
         return tailFound;
     }
-    /*public int[] findTailRecursive(){
+    public int[] findTailRecursive(){
+        int[] previousPosition = new int[2];
+        return findTailRecursive(headPosition, previousPosition);
+    }
+    public int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
         int[] tailFound = new int[3];
-        //base case if cell is tail
-        if() {
-            return tailFound;
-            //each direction
-        }else if(){
-            //call with new cell
+        //count neighbors
+        //check if it's tail
+        int neighbors = 0;
+        if(currentPosition[0] - 1 >=0) {
+            if(game[currentPosition[0]-1][currentPosition[1]] == true){
+                neighbors++;
+            }
         }
-    }*/
+        if(currentPosition[0] + 1 < game.length){
+            if(game[currentPosition[0]+1][currentPosition[1]] == true){
+                neighbors++;
+            }
+        }
+        if(currentPosition[1] - 1 >= 0){
+            if(game[currentPosition[0]][currentPosition[1]-1] == true){
+                neighbors++;
+            }
+        }
+        if(currentPosition[1] + 1 < game.length) {
+            if (game[currentPosition[0]][currentPosition[1] + 1] == true) {
+                neighbors++;
+            }
+        }
+
+        return findTailRecursive();
+    }
+    //NEXT METHOD, CALLS
+    //
     public void printA(int[] boardToPrint){
         for(int number : boardToPrint){
-            System.out.println(number);
+            System.out.print(number);
         }
         System.out.println();
     }
+
 }
