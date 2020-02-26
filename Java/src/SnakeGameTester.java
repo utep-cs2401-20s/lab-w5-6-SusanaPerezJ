@@ -5,6 +5,9 @@ import java.lang.reflect.Array;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SnakeGameTester {
+    public static void main(String[] args) {
+
+    }
     //Exhaustive Checks
     public boolean[][] board1 = {{false, false, false, false, false, false},{false, true, true, true, false, false},
             {false, true, false, true, false, false},{false, true, false, true, false, true},{false, true, false, true, true, true},
@@ -27,7 +30,14 @@ public class SnakeGameTester {
     public void exhaustiveChecks1() {
         SnakeGame game = new SnakeGame(board2, 4, 0);
         int[] solution = {5,6,24};
+
         assertArrayEquals(solution, game.findTailExhaustive());
     }
-
+    //rec
+    @Test
+    public void recursiveChecks() {
+        SnakeGame game = new SnakeGame(board2, 4, 0);
+        int[] solution = {5,6,24};
+        assertArrayEquals(solution, game.findTailRecursive());
+    }
 }
