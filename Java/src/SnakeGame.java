@@ -4,6 +4,8 @@ public class SnakeGame {
     private int[] headPosition = new int[2];
     private static int exhaustiveChecks;
     private static int recursiveChecks;
+    int snakeLength = 0;
+    private int[] tailFound = new int[3];
 
     //default Constructor
     public SnakeGame(){
@@ -74,53 +76,68 @@ public class SnakeGame {
     public int[] findTailRecursive(){
         //reset counter, starting at head
         recursiveChecks = 0;
-        return findTailRecursive(headPosition, headPosition);
+        int[] previous = new int[2];
+        return findTailRecursive(headPosition, previous );
     }
-    private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
-        int row = currentPosition[0];
-        int col = currentPosition[1];
-        int[] tailFound = new int[3];
-        if(row - 1 >= 0){
-            if(game[row-1] [col] == true){
-                recursiveChecks++;
-                currentPosition[0] = row-1;
-                currentPosition[1] = col;
-                return findTailRecursive(currentPosition ,previousPosition);
-            }
-        }
-        if(row + 1 < game.length){
-            if(game[row+1][col] == true){
-                recursiveChecks++;
-                currentPosition[0] = row+1;
-                currentPosition[1] = col;
-                return findTailRecursive(currentPosition ,previousPosition);
-            }
-        }
-        if(col - 1 >= 0){
-            if(game[row] [col-1] == true){
-                recursiveChecks++;
-                currentPosition[0] = row;
-                currentPosition[1] = col-1;
-                return findTailRecursive(currentPosition ,previousPosition);
-            }
-        }
-        if(col + 1 < game.length){
-            if(game[row] [col+1] == true){
-                recursiveChecks++;
-                currentPosition[0] = row;
-                currentPosition[1] = col+1;
-                return findTailRecursive(currentPosition ,previousPosition);
-            }
-        }
-        recursiveChecks++;
-        tailFound[0] = row;
-        tailFound[1] = col;
-        tailFound[2] = 24;
-        return tailFound;
-    }
-    //NEXT METHOD, CALLS
-    //
 
+    private int[] findTailRecursive(int[] currentPosition, int[] previousPosition){
+        recursiveChecks++;
+        int row = currentPosition[0];
+        int col  = currentPosition[1];
+        int[] temp = new int[2];
+        if(row - 1 >= 0){//bounds
+            if(game[row - 1][col] == true) {//has neighbor
+                if(row - 1 != previousPosition[0] || col != previousPosition[1]){
+                    snakeLength++;
+                    temp[0] = row - 1;
+                    temp[1] = col;
+                    previousPosition = currentPosition;
+                    currentPosition = temp;
+                    return findTailRecursive(currentPosition, previousPosition);
+                }
+            }
+        }
+        if(row + 1 < game.length){//bounds
+            if(game[row + 1][col] == true) {//has neighbor
+                if(row + 1 != previousPosition[0] || col != previousPosition[1]){
+                    snakeLength++;
+                    temp[0] = row + 1;
+                    temp[1] = col;
+                    previousPosition = currentPosition;
+                    currentPosition = temp;
+                    return findTailRecursive(currentPosition, previousPosition);
+                }
+            }
+        }
+        if(col - 1 >= 0){//bounds
+            if(game[row][col - 1] == true) {//has neighbor
+                if(row != previousPosition[0] || col - 1 != previousPosition[1]){
+                    snakeLength++;
+                    temp[0] = row;
+                    temp[1] = col - 1;
+                    previousPosition = currentPosition;
+                    currentPosition = temp;
+                    return findTailRecursive(currentPosition, previousPosition);
+                }
+            }
+        }
+        if(col + 1 < game.length){//bounds
+            if(game[row][col + 1] == true) {//has neighbor
+                if(row != previousPosition[0] || col + 1 != previousPosition[1]){
+                    snakeLength++;
+                    temp[0] = row;
+                    temp[1] = col + 1;
+                    previousPosition = currentPosition;
+                    currentPosition = temp;
+                    return findTailRecursive(currentPosition, previousPosition);
+                }
+            }
+        }
+        snakeLength++;
+        System.out.println(row + " " + col + " " + snakeLength);
+        return new int[]{row, col, snakeLength};
+    }
+    
     private void resetCounters(){
         exhaustiveChecks = 0;
         recursiveChecks = 0;
